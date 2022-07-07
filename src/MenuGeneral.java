@@ -1,5 +1,3 @@
-package Menu;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -10,6 +8,7 @@ public class MenuGeneral {
     private ArrayList<MenuEntry> entries = new ArrayList<>();
     Scanner scanner = new Scanner(System.in);
 
+
     boolean isExit = false;
 
     public MenuGeneral() {
@@ -17,7 +16,6 @@ public class MenuGeneral {
         entries.add(new MenuEntry("Cesar Encryption") {
             @Override
             public void run() {
-                StringBuilder pathString = new StringBuilder();
                 Scanner scanner = new Scanner(System.in);
                 System.out.println("Choose file for encryption");
                 File[] logicalDrivers = File.listRoots();
