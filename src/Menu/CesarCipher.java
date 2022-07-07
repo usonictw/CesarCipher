@@ -1,20 +1,25 @@
-import java.io.File;
+package Menu;
+
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Random;
 import java.util.Scanner;
 
 public class CesarCipher {
 
+
     public static void encryption(String path, int shift) throws IOException {
+
+        StringBuilder encryptionString = new StringBuilder();
+        String[] str = path.split("\\.");
+
+        System.out.println(path);
+        String pathAfterEncrypt = str[0] + "Encrypt" + "." + str[1];
+        System.out.println(pathAfterEncrypt);
+
 
         if (Files.exists(Paths.get(path))) {
             RandomAccessFile file = new RandomAccessFile(path, "r");
@@ -22,28 +27,41 @@ public class CesarCipher {
             ByteBuffer buffer = ByteBuffer.allocate((int) fileChannel.size());
             fileChannel.read(buffer);
             buffer.flip();
-            StringBuilder encryptionString = new StringBuilder();
             while (buffer.hasRemaining()) {
                 char ch = (char) buffer.get();
                 if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z')) {
                     encryptionString.append((char) (ch + shift % 26));
                 }
             }
-            Files.createFile(Paths.get("D:\\file1encrypt.txt"));
-            RandomAccessFile fileForWrite = new RandomAccessFile("D:\\file1encrypt.txt", "rw");
+        }
+        if (!Files.isRegularFile(Paths.get(pathAfterEncrypt))) {
+            Files.createFile(Paths.get(pathAfterEncrypt));
+            RandomAccessFile fileForWrite = new RandomAccessFile(pathAfterEncrypt, "rw");
             FileChannel forWrite = fileForWrite.getChannel();
-
             ByteBuffer buffer1 = ByteBuffer.allocate(String.valueOf(encryptionString).getBytes().length);
             buffer1.clear();
             buffer1.put(String.valueOf(encryptionString).getBytes());
             buffer1.flip();
             forWrite.write(buffer1);
             forWrite.close();
+        } else {
+            System.out.println("File already exist. Enter add to file name");
+            Scanner scanner = new Scanner(System.in);
+            String s = scanner.nextLine();
+            pathAfterEncrypt = str[0] + "Encrypt" + s + str[1];
 
+            encryption(pathAfterEncrypt, shift);
         }
+
     }
 
     public static void decryption(String path, int key) throws IOException {
+
+        String[] str = path.split("\\.");
+
+        System.out.println(path);
+        String fileNameAfterDecrypt = str[0] + "Decrypt" + "." + str[1];
+        System.out.println(fileNameAfterDecrypt);
         int k = -key;
         if (Files.exists(Paths.get(path))) {
             RandomAccessFile file = new RandomAccessFile(path, "r");
@@ -58,8 +76,8 @@ public class CesarCipher {
                     encryptionString.append((char) (ch + k % 26));
                 }
             }
-            Files.createFile(Paths.get("D:\\file1Decrypt.txt"));
-            RandomAccessFile fileForWrite = new RandomAccessFile("D:\\fileDecrypt.txt", "rw");
+            Files.createFile(Paths.get(fileNameAfterDecrypt));
+            RandomAccessFile fileForWrite = new RandomAccessFile(fileNameAfterDecrypt, "rw");
             FileChannel forWrite = fileForWrite.getChannel();
 
             ByteBuffer buffer1 = ByteBuffer.allocate(String.valueOf(encryptionString).getBytes().length);
@@ -68,9 +86,6 @@ public class CesarCipher {
             buffer1.flip();
             forWrite.write(buffer1);
             forWrite.close();
-
         }
-
     }
-
 }
