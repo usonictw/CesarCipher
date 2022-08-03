@@ -18,7 +18,6 @@ public class CesarCipher {
         String pathAfterEncrypt = str[0] + "Encrypt" + "." + str[1];
         System.out.println(pathAfterEncrypt);
 
-
         if (Files.exists(Paths.get(path))) {
             RandomAccessFile file = new RandomAccessFile(path, "r");
             FileChannel fileChannel = file.getChannel();
@@ -28,7 +27,9 @@ public class CesarCipher {
             while (buffer.hasRemaining()) {
                 char ch = (char) buffer.get();
                 if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z')) {
-                    encryptionString.append((char) (ch + shift % 26));
+                    encryptionString.append((char)(ch + shift % 26));
+                } else if(ch == ' ' || ch == '.' || ch == '!' || ch == '?' || ch == ',' || ch == '\n' || ch == '\r'){
+                    encryptionString.append(ch);
                 }
             }
         }
@@ -46,7 +47,7 @@ public class CesarCipher {
             System.out.println("File already exist. Enter add to file name");
             Scanner scanner = new Scanner(System.in);
             String s = scanner.nextLine();
-            pathAfterEncrypt = str[0] + "Encrypt" + s + str[1];
+            pathAfterEncrypt = str[0] + "Encrypt" + s + "." + str[1];
 
             encryption(pathAfterEncrypt, shift);
         }
@@ -70,7 +71,9 @@ public class CesarCipher {
             StringBuilder encryptionString = new StringBuilder();
             while (buffer.hasRemaining()) {
                 char ch = (char) buffer.get();
-                if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z')) {
+                if(ch == ' ' || ch == '.' || ch == '!' || ch == '?' || ch == ',' || ch == '\n' || ch == '\r'){
+                    encryptionString.append(ch);
+                }else {
                     encryptionString.append((char) (ch + k % 26));
                 }
             }
