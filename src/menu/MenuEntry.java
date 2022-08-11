@@ -1,3 +1,5 @@
+package menu;
+
 public abstract class MenuEntry {
 
     private String title;

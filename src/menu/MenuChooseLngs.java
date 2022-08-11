@@ -1,31 +1,38 @@
-import java.io.*;
+package menu;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Scanner;
 
-public class MenuGeneral {
+public class MenuChooseLngs {
 
-    private ArrayList<MenuEntry> entries = new ArrayList<>();
-    boolean isExit = false;
-    Controller controller = new Controller();
+    public static String titleLng;
+    private ArrayList<MenuEntry> menuList = new ArrayList<>();
+    private boolean isExit = false;
 
-    public MenuGeneral() {
 
-        entries.add(new MenuEntry("Cesar Encryption") {
+    public MenuChooseLngs() {
+
+        menuList.add(new MenuEntry("English") {
             @Override
             public void run() {
-                controller.CesarEncryption();
+                titleLng = "English";
+                MenuEncryption menuEncryption = new MenuEncryption();
+                menuEncryption.run();
             }
         });
 
-        entries.add(new MenuEntry("Cesar Decryption") {
+        menuList.add(new MenuEntry("Cyrillic") {
             @Override
             public void run() {
-                controller.CesarDecryption();
+                titleLng = "Cyrillic";
+                MenuEncryption menuEncryption = new MenuEncryption();
+                menuEncryption.run();
             }
         });
 
-        entries.add(new MenuEntry("Exit") {
+        menuList.add(new MenuEntry("Exit") {
             @Override
             public void run() {
                 isExit = true;
@@ -43,7 +50,7 @@ public class MenuGeneral {
                 String line = reader.readLine();
                 int choice = Integer.parseInt(line);
                 // Выбираем пункт меню где будет выполняться код
-                MenuEntry entry = entries.get(choice - 1);
+                MenuEntry entry = menuList.get(choice - 1);
                 entry.run();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -53,9 +60,10 @@ public class MenuGeneral {
 
     private void printMenu() {
         int itemNumber = 1;
-        for (int i = 0; i < entries.size(); i++) {
-            System.out.println(itemNumber + ". " + entries.get(i).getTitle());
+        for (int i = 0; i < menuList.size(); i++) {
+            System.out.println(itemNumber + ". " + menuList.get(i).getTitle());
             itemNumber++;
         }
     }
 }
+
